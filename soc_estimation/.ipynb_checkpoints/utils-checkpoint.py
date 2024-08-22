@@ -2,6 +2,7 @@ import numpy as np
 from sklearn import metrics
 import pandas as pd
 from tabulate import tabulate
+from matplotlib import pyplot as plt
 
 
 def normalize(X):
@@ -44,3 +45,23 @@ def get_metrics(y_test, y_predicted):
     })
     
     return styled_table
+
+
+def plot_obs_pred(y_test, y_predicted, ylabel, xlabel):
+    fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(11, 6))
+
+    axs[0].plot(y_test, label='observed')
+    axs[0].plot(y_predicted, label='predicted')
+    axs[0].set_ylabel(f'{ylabel}')
+    axs[0].set_xlabel(f'{xlabel}')
+    axs[0].legend()
+    
+    axs[1].plot(y_test, label='observed')
+    axs[1].plot(y_predicted, label='predicted')
+    axs[1].set_ylabel(f'{ylabel}')
+    axs[1].set_xlabel(f'{xlabel}')
+    axs[1].legend()
+    axs[1].axis([0, 10000, 0, 1])
+    
+    plt.tight_layout()
+    plt.show()
