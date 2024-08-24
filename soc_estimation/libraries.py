@@ -32,7 +32,7 @@ logging.basicConfig(
     level=logging.INFO,  # Logging level: INFO, can be set to DEBUG for more details
     format='%(asctime)s - %(levelname)s - %(message)s',  # Log format
     handlers=[
-        logging.FileHandler("install_libraries.log"),  # Save logs to a file
+        logging.FileHandler("libraries.log"),  # Save logs to a file
         logging.StreamHandler(sys.stdout)  # Also print logs to the console
     ]
 )
