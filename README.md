@@ -1,5 +1,4 @@
-- SOC estimation
-[a relative link](./soc_estimation/README.md)
+- [SOC estimation](./soc_estimation/README.md)
 
 
 ## Getting Started
