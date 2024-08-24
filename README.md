@@ -1,3 +1,7 @@
+- SOC estimation
+[a relative link](./soc_estimation/README.md)
+
+
 ## Getting Started
 
 **Clone the Repository**
