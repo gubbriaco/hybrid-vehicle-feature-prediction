@@ -1,9 +1,9 @@
 '''
-install_libraries.py
+libraries.py
 
 This script automates the process of upgrading `pip` and installing a list of Python libraries. 
 It uses the `subprocess` module to run `pip` commands and logs the entire process, including 
-successes and failures, to both the console and a log file (`install_libraries.log`).
+successes and failures, to both the console and a log file (`libraries.log`).
 
 ### Features:
 - Upgrades `pip` to the latest version before installing any libraries.
