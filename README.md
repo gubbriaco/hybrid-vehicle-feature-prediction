@@ -6,6 +6,6 @@
 **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/your-repository.git
-   cd your-repository
+   git clone https://github.com/gubbriaco/hybrid-vehicle-feature-prediction.git
+   cd hybrid-vehicle-feature-prediction
    
