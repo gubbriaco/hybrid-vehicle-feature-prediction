@@ -20,7 +20,7 @@ successes and failures, to both the console and a log file (`libraries.log`).
 2. Run the script from the terminal:
    
    ```bash
-   python install_libraries.py
+   python libraries.py
 '''
 
 import subprocess
