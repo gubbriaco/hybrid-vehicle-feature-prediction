@@ -1,4 +1,4 @@
-- [SOC estimation](./soc_estimation/README.md)
+- [SOC estimation](./soc_estimation/LGHG2@n10C_to_25degC/README.md)
 
 
 ## Getting Started
