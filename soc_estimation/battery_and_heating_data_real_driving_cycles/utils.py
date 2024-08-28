@@ -10,14 +10,21 @@ def data_cleaning(dfs, steady_cols_to_drop):
     sup_min_cols_dfs_idx = DataCleaning.get_sup_min_cols_dfs_idx(cols_dfs, no_cols_dfs)
     set_min_cols = set(cols_dfs[min_cols_idx[0]])
     set_cols_to_delete = DataCleaning.get_set_cols_to_delete(cols_dfs, set_min_cols)
-    DataCleaning.update__cols_dfs(dfs, sup_min_cols_dfs_idx, set_cols_to_delete)
+    DataCleaning.update_cols_dfs(dfs, sup_min_cols_dfs_idx, set_cols_to_delete)
     for i in range(len(dfs)):
+        '''
+        Steady columns dropping from dataframes.
+        '''
         dfs[i].drop(steady_cols_to_drop, axis=1, inplace=True)
+    dfs.pop(-1)
 
 
 class DataCleaning:
     @staticmethod
     def get_cols_dfs(dfs):
+        '''
+        Getter each dataframe columns.
+        '''
         cols_dfs = []
         for i in range(len(dfs)):
             cols_dfs.append(dfs[i].columns)
@@ -25,6 +32,9 @@ class DataCleaning:
 
     @staticmethod
     def get_no_cols_dfs(dfs):
+        '''
+        Getter number of each dataframe columns.
+        '''
         no_cols_dfs = []
         for i in range(len(dfs)):
             no_cols_dfs.append(len(dfs[i].columns))
@@ -32,6 +42,9 @@ class DataCleaning:
 
     @staticmethod
     def get_min_cols_idx(cols_dfs, no_cols_dfs):
+        '''
+        Getter index of dataframes which have minimum number of columns.
+        '''
         min_cols_idx = []
         for i in range(len(cols_dfs)):
             if len(cols_dfs[i]) == min(no_cols_dfs):
@@ -40,6 +53,9 @@ class DataCleaning:
 
     @staticmethod
     def get_sup_min_cols_dfs_idx(cols_dfs, no_cols_dfs):
+        '''
+        Getter index of dataframes which have a number of columns greater than minimum number of columns.
+        '''
         sup_min_cols_dfs_idx = []
         for i in range(len(cols_dfs)):
             if len(cols_dfs[i]) > min(no_cols_dfs):
@@ -48,6 +64,9 @@ class DataCleaning:
 
     @staticmethod
     def get_set_cols_to_delete(cols_dfs, set_min_cols):
+        '''
+        Getter array of sets of columns to delete (each dataframe).
+        '''
         set_cols_to_delete = []
         for i in range(len(cols_dfs)):
             curr_set_cols = set(cols_dfs[i])
@@ -56,7 +75,10 @@ class DataCleaning:
         return set_cols_to_delete
 
     @staticmethod
-    def update__cols_dfs(dfs, sup_min_cols_dfs_idx, set_cols_to_delete):
+    def update_cols_dfs(dfs, sup_min_cols_dfs_idx, set_cols_to_delete):
+        '''
+        Dataframes update. It provides for the columns dropping from dataframes.
+        '''
         for i in range(len(sup_min_cols_dfs_idx)):
             # si prende l'indice corrispondente al dataframe con cols>min_cols
             idx = sup_min_cols_dfs_idx[i]
