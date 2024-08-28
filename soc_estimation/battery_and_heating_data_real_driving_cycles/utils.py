@@ -38,7 +38,6 @@ def data_cleaning(dfs, steady_cols_to_drop):
         Steady columns dropping from dataframes.
         '''
         dfs[i].drop(steady_cols_to_drop, axis=1, inplace=True)
-    dfs.pop(-1)
     return min_SOC, max_SOC
 
 
