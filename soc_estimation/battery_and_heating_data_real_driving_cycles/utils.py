@@ -1,9 +1,31 @@
+import os
+import pandas as pd
+
+
+def csvs2dfs(trips_dir, csvs_list):
+    '''
+    Getter list of dataframes from a list of .csv files.
+    '''
+    trips = []
+    for i in range(len(csvs_list)):
+        trip_name = csvs_list[i]
+        trip_path = os.path.join(trips_dir, trip_name)
+        trip = pd.read_csv(trip_path)
+        trips.append(trip)
+    return trips
+
+
 def get_steady_cols(df):
+    '''
+    Getter steady columns from dataframe.
+    '''
     steady_cols = [col for col in df.columns if df[col].nunique() == 1]
     return steady_cols
 
 
 def data_cleaning(dfs, steady_cols_to_drop):
+    min_SOC = dfs[0]._get_value(0, steady_cols_to_drop[0]) 
+    max_SOC = dfs[0]._get_value(0, steady_cols_to_drop[1]) 
     cols_dfs = DataCleaning.get_cols_dfs(dfs)
     no_cols_dfs = DataCleaning.get_no_cols_dfs(dfs)
     min_cols_idx = DataCleaning.get_min_cols_idx(cols_dfs, no_cols_dfs)
@@ -17,6 +39,7 @@ def data_cleaning(dfs, steady_cols_to_drop):
         '''
         dfs[i].drop(steady_cols_to_drop, axis=1, inplace=True)
     dfs.pop(-1)
+    return min_SOC, max_SOC
 
 
 class DataCleaning:
