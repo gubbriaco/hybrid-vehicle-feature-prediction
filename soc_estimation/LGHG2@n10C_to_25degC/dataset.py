@@ -73,6 +73,9 @@ class LGHG2():
         )
 
 
+    def get_dfs(self):
+        return self.train_data_df, self.val_data_df, self.test_data_df
+
     def get_X_train(self):
         return self._X_train
         
