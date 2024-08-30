@@ -193,3 +193,10 @@ def time_series_plot(train_data_df, val_data_df, test_data_df):
     plt.tight_layout()
     plt.suptitle('Testing Distribution', fontsize=16, y=1.06)
     plt.show()
+
+
+def correlation_map(train_data_df):
+    plt.figure(figsize=(16, 6))
+    sns.heatmap(train_data_df.corr(), annot=True)
+    plt.show()
+    
