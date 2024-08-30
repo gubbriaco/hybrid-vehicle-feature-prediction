@@ -69,7 +69,14 @@ class LGHG2():
         self._y_val = self.val_data_df[_target].values
         self._y_test = self.test_data_df[_target].values
 
-        return self._X_train, self._X_val, self._X_test, self._y_train, self._y_val, self._y_test
+        return (
+            utils.normalize(self._X_train), 
+            utils.normalize(self._X_val), 
+            utils.normalize(self._X_test), 
+            self._y_train, 
+            self._y_val, 
+            self._y_test
+        )
 
 
     def get_X_train(self):
