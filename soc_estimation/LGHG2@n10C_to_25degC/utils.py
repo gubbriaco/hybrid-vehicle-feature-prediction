@@ -3,6 +3,7 @@ from sklearn import metrics
 import pandas as pd
 from tabulate import tabulate
 from matplotlib import pyplot as plt
+import seaborn as sns
 
 
 def normalize(X):
@@ -96,17 +97,99 @@ def plot_obs_pred(y_test, y_predicted, ylabel, xlabel):
     fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(11, 6))
 
     axs[0].plot(y_test, label='observed')
-    axs[0].plot(y_predicted, label='predicted')
+    axs[0].plot(y_predicted, label='predicted', linestyle = 'dashed')
     axs[0].set_ylabel(f'{ylabel}')
     axs[0].set_xlabel(f'{xlabel}')
     axs[0].legend()
     
     axs[1].plot(y_test, label='observed')
-    axs[1].plot(y_predicted, label='predicted')
+    axs[1].plot(y_predicted, label='predicted', linestyle = 'dashed')
     axs[1].set_ylabel(f'{ylabel}')
     axs[1].set_xlabel(f'{xlabel}')
     axs[1].legend()
     axs[1].axis([0, 10000, 0, 1])
     
     plt.tight_layout()
+    plt.show()
+
+
+def pie_chart_plot(train_data_df, val_data_df, test_data_df, title="Dataset Distribution"):
+  num_rows_train = len(train_data_df)
+  num_rows_val = len(val_data_df)
+  num_rows_test = len(test_data_df)
+
+  total_rows = num_rows_train + num_rows_val + num_rows_test
+
+  percentages = [
+      num_rows_train / total_rows * 100,
+      num_rows_val / total_rows * 100,
+      num_rows_test / total_rows * 100
+  ]
+
+  labels = ['Training', 'Validation', 'Test']
+  plt.pie(percentages, labels=labels, autopct='%1.1f%%')
+  plt.title(title)
+  plt.axis('equal')
+  plt.show()
+
+
+def violin_plot(train_data_df, val_data_df, test_data_df):
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
+    sns.violinplot(ax=axes[0], data=train_data_df)
+    axes[0].set_title('Training Distribution')
+    sns.violinplot(ax=axes[1], data=val_data_df)
+    axes[1].set_title('Validation Distribution')
+    sns.violinplot(ax=axes[2], data=test_data_df)
+    axes[2].set_title('Testing Distribution')
+    
+
+def hist_plot(train_data_df, val_data_df, test_data_df):
+    fig, axs = plt.subplots(1, train_data_df.shape[1], figsize=(20, 4))
+    for i, key in enumerate(train_data_df.keys()):
+        sns.histplot(ax=axs[i], x=train_data_df[key])
+        axs[i].legend([f'{key}'])
+    plt.tight_layout()
+    plt.suptitle('Training Distribution', fontsize=16, y=1.06)
+    plt.show()
+    
+    fig, axs = plt.subplots(1, val_data_df.shape[1], figsize=(20, 4))
+    for i, key in enumerate(val_data_df.keys()):
+        sns.histplot(ax=axs[i], x=val_data_df[key])
+        axs[i].legend([f'{key}'])
+    plt.tight_layout()
+    plt.suptitle('Validation Distribution', fontsize=16, y=1.06)
+    plt.show()
+    
+    fig, axs = plt.subplots(1, test_data_df.shape[1], figsize=(20, 4))
+    for i, key in enumerate(test_data_df.keys()):
+        sns.histplot(ax=axs[i], x=test_data_df[key])
+        axs[i].legend([f'{key}'])
+    plt.tight_layout()
+    plt.suptitle('Testing Distribution', fontsize=16, y=1.06)
+    plt.show()
+
+
+def time_series_plot(train_data_df, val_data_df, test_data_df):
+    fig, axs = plt.subplots(1, train_data_df.shape[1], figsize=(20, 4))
+    for i, key in enumerate(train_data_df.keys()):
+        sns.lineplot(ax=axs[i], data=train_data_df[key])
+        axs[i].legend([f'{key}'])
+    plt.tight_layout()
+    plt.suptitle('Training Distribution', fontsize=16, y=1.06)
+    plt.show()
+    
+    fig, axs = plt.subplots(1, val_data_df.shape[1], figsize=(20, 4))
+    for i, key in enumerate(val_data_df.keys()):
+        sns.lineplot(ax=axs[i], data=val_data_df[key])
+        axs[i].legend([f'{key}'])
+    plt.tight_layout()
+    plt.suptitle('Validation Distribution', fontsize=16, y=1.06)
+    plt.show()
+    
+    fig, axs = plt.subplots(1, test_data_df.shape[1], figsize=(20, 4))
+    for i, key in enumerate(test_data_df.keys()):
+        sns.lineplot(ax=axs[i], data=test_data_df[key])
+        axs[i].legend([f'{key}'])
+    plt.tight_layout()
+    plt.suptitle('Testing Distribution', fontsize=16, y=1.06)
     plt.show()
