@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import utils
+import sys
 import logging
 import os
 
@@ -16,11 +17,11 @@ class LGHG2():
         self._train_data_dir = os.path.join(self._data_dir, self._train_data_subdir)
         self._val_data_dir = os.path.join(self._data_dir, self._val_data_subdir)
         self._test_data_dir = os.path.join(self._data_dir, self._test_data_subdir)
-        self._logger = logging.getLogger()
-        self._logger.info(f'{self._data_dir} = {os.listdir(self._data_dir)}')
-        self._logger.info(f'{self._train_data_dir} = {os.listdir(self._train_data_dir)}')
-        self._logger.info(f'{self._val_data_dir} = {os.listdir(self._val_data_dir)}')
-        self._logger.info(f'{self._test_data_dir} = {os.listdir(self._test_data_dir)}')
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+        logging.info(f'{self._data_dir} = {os.listdir(self._data_dir)}')
+        logging.info(f'{self._train_data_dir} = {os.listdir(self._train_data_dir)}')
+        logging.info(f'{self._val_data_dir} = {os.listdir(self._val_data_dir)}')
+        logging.info(f'{self._test_data_dir} = {os.listdir(self._test_data_dir)}')
         
     
     def get_data_dir(self):
@@ -48,32 +49,25 @@ class LGHG2():
         self._check_df(df=self.val_data_df, df_name='val_data_df')
         self._check_df(df=self.test_data_df, df_name='test_data_df')
 
-        self._logger.info(f'data_columns = {self.train_data_df.columns}')
-        cols = set(self.train_data_df.columns)
-        _target = ['SOC']
-        self._logger.info(f'target = {_target}')
-        _target = set(_target)
-        _features = cols - _target
-        _target = list(_target)
-        _features = list(_features)
-        self._logger.info(f'features = {_features}')
+        logging.info(f'data_columns = {self.train_data_df.columns}')
+        features = ['V', 'I', 'Temp', 'V_avg', 'I_avg']
+        target = ['SOC']
+        logging.info(f'features = {features}')
+        logging.info(f'target = {target}')
 
-        self._write_cols(dir_path=self._data_dir, file_name='target.txt', cols=_target)
-        self._write_cols(dir_path=self._data_dir, file_name='features.txt', cols=_features)
+        self._X_train = self.train_data_df[features].values
+        self._X_val = self.val_data_df[features].values
+        self._X_test = self.test_data_df[features].values
 
-        self._X_train = self.train_data_df[_features].values
-        self._X_val = self.val_data_df[_features].values
-        self._X_test = self.test_data_df[_features].values
-
-        self._y_train = self.train_data_df[_target].values
-        self._y_val = self.val_data_df[_target].values
-        self._y_test = self.test_data_df[_target].values
+        self._y_train = self.train_data_df[target].values
+        self._y_val = self.val_data_df[target].values
+        self._y_test = self.test_data_df[target].values
 
         return (
             utils.normalize(self._X_train), 
             utils.normalize(self._X_val), 
             utils.normalize(self._X_test), 
-            self._y_train, 
+             self._y_train, 
             self._y_val, 
             self._y_test
         )
@@ -112,14 +106,7 @@ class LGHG2():
     
     def _check_df(self, df, df_name):
         if df.empty:
-            self._logger.info(f'WARNING# {df_name} is empty.')
+            logging.info(f'WARNING# {df_name} is empty.')
         else: 
-            self._logger.info(f'{df_name} loaded.')
-
-    
-    def _write_cols(self, dir_path, file_name, cols):
-        file_path = os.path.join(dir_path, file_name)
-        with open(file_path, 'w') as file:
-            for i in range(len(cols)):
-                file.write(f'{cols[i]}\n')
+            logging.info(f'{df_name} loaded.')
     
