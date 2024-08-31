@@ -1,5 +1,6 @@
 from tensorflow import keras
 from tensorflow.keras import layers
+import numpy as np
 
 
 class CustomLeakyReLU(layers.Layer):
@@ -124,3 +125,30 @@ class CustomClippedReLU(layers.Layer):
             CustomClippedReLU: An instance of `CustomClippedReLU` initialized with the given configuration.
         """
         return cls(**config)
+
+
+class KalmanFilter1D:
+    def __init__(self, process_variance, measurement_variance, initial_estimate, initial_estimate_variance):
+        self.process_variance = process_variance
+        self.measurement_variance = measurement_variance
+        self.estimate = initial_estimate
+        self.estimate_variance = initial_estimate_variance
+
+    def _update(self, measurement):
+        # Calcolo del guadagno di Kalman
+        kalman_gain = self.estimate_variance / (self.estimate_variance + self.measurement_variance)
+        
+        # Aggiornamento della stima con la misura
+        self.estimate = self.estimate + kalman_gain * (measurement - self.estimate)
+        
+        # Aggiornamento della varianza della stima
+        self.estimate_variance = (1 - kalman_gain) * self.estimate_variance + self.process_variance
+
+        return self.estimate
+
+    def apply(self, measurements):
+        filtered_estimates = []
+        for measurement in measurements:
+            filtered_estimate = self._update(measurement)
+            filtered_estimates.append(filtered_estimate)
+        return filtered_estimates
