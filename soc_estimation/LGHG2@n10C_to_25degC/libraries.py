@@ -119,4 +119,16 @@ def install_libraries(libraries):
             logging.error(f"Failed to install {library}: {e}")
 
 
+# List of libraries to install
+libraries = [
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "seaborn",
+    "tensorflow",
+    "scikit-learn",
+    "openpyxl"
+]
+upgrade_pip()
+install_libraries(libraries)
 logging.info("Installation of all libraries completed!")
