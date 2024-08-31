@@ -127,28 +127,94 @@ class CustomClippedReLU(layers.Layer):
         return cls(**config)
 
 
-class KalmanFilter1D:
-    def __init__(self, process_variance, measurement_variance, initial_estimate, initial_estimate_variance):
-        self.process_variance = process_variance
-        self.measurement_variance = measurement_variance
-        self.estimate = initial_estimate
-        self.estimate_variance = initial_estimate_variance
+class AHIF:
+    """
+    Adaptive Hybrid Iterative Filter (AHIF) for data processing using adaptive Kalman filtering.
+
+    This class implements a Kalman filter that dynamically adapts to changes in measurement residual variability.
+    The filter updates its estimate and process variance based on the provided data, improving estimate accuracy over time.
+
+    Attributes:
+        _process_variance (float): Initial process variance (default: 1e-5).
+        _measurement_variance (float): Measurement variance (default: 1e-1).
+        _estimate (float): Initial estimate value (default: 0).
+        _error_covariance (float): Initial error covariance (default: 1).
+    """
+
+    def __init__(self, process_variance=1e-5, measurement_variance=1e-1, initial_estimate=0, initial_error_covariance=1):
+        """
+        Initializes an AHIF instance.
+
+        Args:
+            process_variance (float): Variance of the process affecting the filter's prediction (default: 1e-5).
+            measurement_variance (float): Variance of the measurement affecting the filter's update (default: 1e-1).
+            initial_estimate (float): Initial value of the estimate (default: 0).
+            initial_error_covariance (float): Initial error covariance (default: 1).
+        """
+        self._process_variance = process_variance
+        self._measurement_variance = measurement_variance
+        self._estimate = initial_estimate
+        self._error_covariance = initial_error_covariance
 
     def _update(self, measurement):
-        # Calcolo del guadagno di Kalman
-        kalman_gain = self.estimate_variance / (self.estimate_variance + self.measurement_variance)
-        
-        # Aggiornamento della stima con la misura
-        self.estimate = self.estimate + kalman_gain * (measurement - self.estimate)
-        
-        # Aggiornamento della varianza della stima
-        self.estimate_variance = (1 - kalman_gain) * self.estimate_variance + self.process_variance
+        """
+        Updates the estimate and error covariance based on the provided measurement.
 
-        return self.estimate
+        This method predicts the new state and updates the estimate and error covariance using the Kalman gain.
 
-    def apply(self, measurements):
-        filtered_estimates = []
-        for measurement in measurements:
-            filtered_estimate = self._update(measurement)
-            filtered_estimates.append(filtered_estimate)
-        return filtered_estimates
+        Args:
+            measurement (float): The current measurement to update the estimate with.
+
+        Returns:
+            float: The updated estimate.
+        """
+        # Prediction
+        predicted_estimate = self._estimate
+        predicted_error_covariance = self._error_covariance + self._process_variance
+        kalman_gain = predicted_error_covariance / (predicted_error_covariance + self._measurement_variance)
+        # Update estimate and error covariance
+        self._estimate = predicted_estimate + kalman_gain * (measurement - predicted_estimate)
+        self._error_covariance = (1 - kalman_gain) * predicted_error_covariance
+        return self._estimate
+
+    def _adapt(self, residuals):
+        """
+        Adapts the process variance based on recent residuals.
+
+        This method updates the process variance (process_variance) based on the standard deviation of the residuals.
+        The process variance is adjusted to avoid becoming too small, which could destabilize the filter.
+
+        Args:
+            residuals (list of float): List of recent residuals used for adaptation.
+        """
+        if len(residuals) > 1:
+            residual_std = np.std(residuals)
+            # Prevent process variance from becoming too small
+            self._process_variance = max(residual_std ** 2, 1e-5)
+        else:
+            # Default behavior if residuals are not enough for adaptation
+            self._process_variance = 1e-5
+
+    def apply(self, data):
+        """
+        Applies the AHIF to the provided data and returns the resulting estimates.
+
+        This method performs the estimate update for each measurement in the data and adapts the filter based on recent residuals.
+
+        Args:
+            data (list of float): List of measurement data to which the filter will be applied.
+
+        Returns:
+            numpy.ndarray: A numpy array containing the resulting estimates for each data point.
+        """
+        estimates = []
+        residuals = []
+        for measurement in data:
+            estimate = self._update(measurement)
+            estimates.append(estimate)
+            residual = measurement - estimate
+            residuals.append(residual)
+            # Adapt filter based on the latest residuals
+            if len(residuals) > 10:
+                self._adapt(residuals[-10:])
+        return np.array(estimates)
