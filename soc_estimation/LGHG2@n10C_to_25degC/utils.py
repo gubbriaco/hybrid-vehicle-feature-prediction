@@ -31,20 +31,6 @@ def normalize(X):
 
 
 def get_metrics(y_test, y_predicted):
-    """
-    Calculate and format various metrics between true and predicted values.
-
-    This function computes a set of standard regression metrics including max error, mean 
-    absolute error, mean absolute percentage error, mean squared error, root mean squared error, 
-    and root mean squared logarithmic error. The results are returned as a styled DataFrame.
-
-    Parameters:
-    y_test (array-like): True values of the target variable.
-    y_predicted (array-like): Predicted values of the target variable.
-
-    Returns:
-    pandas.io.formats.style.Styler: A styled DataFrame containing the metrics and their values.
-    """
     results = {
         "Metric": [
             "max_error",
@@ -63,52 +49,46 @@ def get_metrics(y_test, y_predicted):
             metrics.root_mean_squared_log_error(y_test, y_predicted)
         ]
     }
-    
     df = pd.DataFrame(results)
-    
     styled_table = df.style.background_gradient(cmap="coolwarm").set_properties(**{
         'border': '1.5px solid black', 
         'color': 'black',
         'font-size': '12pt',
         'text-align': 'center'
     })
-    
     return styled_table
+    
 
-
-def plot_obs_pred(y_test, y_predicted, ylabel, xlabel):
-    """
-    Plot observed vs predicted values.
-
-    This function generates two subplots. The first subplot displays the full range of observed and 
-    predicted values, while the second subplot zooms in on the range [0, 10000] on the x-axis 
-    and [0, 1] on the y-axis. Both subplots include legends to differentiate between observed 
-    and predicted values.
-
-    Parameters:
-    y_test (array-like): True values of the target variable.
-    y_predicted (array-like): Predicted values of the target variable.
-    ylabel (str): Label for the y-axis.
-    xlabel (str): Label for the x-axis.
-
-    Returns:
-    None: The function displays the plots directly.
-    """
+def results_plot(
+    x_observed, 
+    y_observed,
+    x_predicted, 
+    y_predicted,
+    xlim,
+    ylim,
+    xlabel, 
+    ylabel, 
+    title
+):
     fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(11, 6))
+    
+    scatter_observed = axs[0].scatter(x_observed, y_observed, label='observed', s=0.001)
+    scatter_predicted = axs[0].scatter(x_predicted, y_predicted, label='predicted', s=0.001) 
+    axs[0].set_xlabel(f'{xlabel}'), axs[0].set_ylabel(f'{ylabel}')
+    legend_observed = axs[0].scatter([], [], color=scatter_observed.get_edgecolor()[0], label='observed')
+    legend_predicted = axs[0].scatter([], [], color=scatter_predicted.get_edgecolor()[0], label='predicted')
+    axs[0].legend(handles=[legend_observed, legend_predicted])
+    
+    scatter_observed = axs[1].scatter(x_observed, y_observed, label='observed', s=0.001)
+    scatter_predicted = axs[1].scatter(x_predicted, y_predicted, label='predicted', s=0.001)
+    axs[1].set_xlabel(f'{xlabel}'), axs[0].set_ylabel(f'{ylabel}')
+    legend_observed = axs[1].scatter([], [], color=scatter_observed.get_edgecolor()[0], label='observed')
+    legend_predicted = axs[1].scatter([], [], color=scatter_predicted.get_edgecolor()[0], label='predicted')
+    axs[1].legend(handles=[legend_observed, legend_predicted])
+    axs[1].set_xlim(xlim[0], xlim[1])
+    axs[1].set_ylim(ylim[0], ylim[1])
 
-    axs[0].plot(y_test, label='observed')
-    axs[0].plot(y_predicted, label='predicted', linestyle = 'dashed')
-    axs[0].set_ylabel(f'{ylabel}')
-    axs[0].set_xlabel(f'{xlabel}')
-    axs[0].legend()
-    
-    axs[1].plot(y_test, label='observed')
-    axs[1].plot(y_predicted, label='predicted', linestyle = 'dashed')
-    axs[1].set_ylabel(f'{ylabel}')
-    axs[1].set_xlabel(f'{xlabel}')
-    axs[1].legend()
-    axs[1].axis([0, 10000, 0, 1])
-    
+    plt.suptitle(title)
     plt.tight_layout()
     plt.show()
 
@@ -195,8 +175,8 @@ def time_series_plot(train_data_df, val_data_df, test_data_df):
     plt.show()
 
 
-def correlation_map(train_data_df):
+def correlation_map(data_df):
     plt.figure(figsize=(16, 6))
-    sns.heatmap(train_data_df.corr(), annot=True)
+    sns.heatmap(data_df.corr(), annot=True)
     plt.show()
     
