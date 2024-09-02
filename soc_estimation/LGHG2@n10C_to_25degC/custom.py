@@ -1,8 +1,104 @@
+import sys
+import logging
 from tensorflow import keras
 from tensorflow.keras import layers
 import numpy as np
 
 
+
+class FNN:
+    """
+    A class to represent a Feedforward Neural Network (FNN) model.
+    
+    Attributes:
+        input_shape (int): The number of features in the input data.
+        output_shape (int): The number of output neurons (e.g., number of classes for classification).
+        model (keras.Model, optional): The Keras model instance. Defaults to None.
+    """
+    
+    def __init__(self, input_shape, output_shape):
+        """
+        Initializes the FNNModel with the given input and output shapes.
+        
+        Args:
+            input_shape (int): The number of features in the input data.
+            output_shape (int): The number of output neurons.
+        """
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+        self.input_shape = input_shape
+        self.output_shape = output_shape
+        logging.info("FNNModel instance created with input shape %d and output shape %d.", input_shape, output_shape)
+        self.model = None
+
+    def get_input_shape(self):
+        return self.input_shape
+
+    def get_output_shape(self):
+        return self.output_shape
+    
+    def get_model(self):
+        """
+        Returns the trained model instance.
+        
+        Returns:
+            keras.Model: The trained Keras model instance.
+        """
+        return self.model
+        
+    def build(self):
+        """
+        Builds the model architecture. This method constructs the layers and specifies the activation functions.
+        """
+        logging.info("Building the model...")
+        self.model = keras.Sequential([
+            layers.Input(shape=(self.input_shape,)),
+            layers.Dense(
+                256,
+                activation=keras.activations.relu
+            ),
+            layers.Dense(
+                256,
+                activation=keras.activations.relu
+            ),
+            layers.Dense(
+                128,
+                activation=CustomLeakyReLU(negative_slope=0.3)
+            ),
+            layers.Dense(
+                self.output_shape,
+                activation=CustomClippedReLU()
+            )
+        ])
+        logging.info("Model built successfully.")
+
+    def compile(self):
+        """
+        Compiles the model with the specified optimizer and loss function. 
+        This method must be called after `build_model` to prepare the model for training.
+        
+        Raises:
+            ValueError: If the model is not built before calling this method.
+        """
+        logging.info("Compiling the model...")
+        if self.model is None:
+            raise ValueError("Model is not built. Call `build_model()` before `compile_model()`.")
+        lr_schedule = keras.optimizers.schedules.ExponentialDecay(
+            initial_learning_rate=0.01,
+            decay_steps=10000,
+            decay_rate=0.9,
+            staircase=False
+        )
+        optimizer = keras.optimizers.SGD(
+            learning_rate=lr_schedule
+        )
+        self.model.compile(
+            optimizer=optimizer,
+            loss='mse'
+        )
+        logging.info("Model compiled successfully.")
+        self.model.summary()
+
+    
 class CustomLeakyReLU(layers.Layer):
     """
     Custom implementation of the Leaky ReLU activation function.
@@ -151,10 +247,13 @@ class AHIF:
             initial_estimate (float): Initial value of the estimate (default: 0).
             initial_error_covariance (float): Initial error covariance (default: 1).
         """
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO)
         self._process_variance = process_variance
         self._measurement_variance = measurement_variance
         self._estimate = initial_estimate
         self._error_covariance = initial_error_covariance
+        logging.info(f"Initialized AHIF with process_variance={process_variance}, measurement_variance={measurement_variance}, "
+                      f"initial_estimate={initial_estimate}, initial_error_covariance={initial_error_covariance}")
 
     def _update(self, measurement):
         """
