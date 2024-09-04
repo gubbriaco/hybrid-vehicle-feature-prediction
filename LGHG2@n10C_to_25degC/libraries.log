@@ -3452,3 +3452,73 @@
 2024-09-02 13:27:22,255 - INFO - Command 'install openpyxl' executed successfully.
 2024-09-02 13:27:22,255 - INFO - openpyxl installed successfully.
 2024-09-02 13:27:22,255 - INFO - Installation of all libraries completed!
+2024-09-04 17:22:52,954 - INFO - Upgrading pip...
+2024-09-04 17:22:52,973 - INFO - Running pip command: install --upgrade pip
+2024-09-04 17:23:02,612 - INFO - Command 'install --upgrade pip' executed successfully.
+2024-09-04 17:23:02,612 - INFO - pip upgraded successfully.
+2024-09-04 17:23:02,612 - INFO - Installing library numpy...
+2024-09-04 17:23:02,612 - INFO - Running pip command: install numpy
+2024-09-04 17:23:03,980 - INFO - Command 'install numpy' executed successfully.
+2024-09-04 17:23:03,980 - INFO - numpy installed successfully.
+2024-09-04 17:23:03,980 - INFO - Installing library pandas...
+2024-09-04 17:23:03,980 - INFO - Running pip command: install pandas
+2024-09-04 17:23:05,281 - INFO - Command 'install pandas' executed successfully.
+2024-09-04 17:23:05,281 - INFO - pandas installed successfully.
+2024-09-04 17:23:05,281 - INFO - Installing library matplotlib...
+2024-09-04 17:23:05,281 - INFO - Running pip command: install matplotlib
+2024-09-04 17:23:06,523 - INFO - Command 'install matplotlib' executed successfully.
+2024-09-04 17:23:06,523 - INFO - matplotlib installed successfully.
+2024-09-04 17:23:06,523 - INFO - Installing library seaborn...
+2024-09-04 17:23:06,523 - INFO - Running pip command: install seaborn
+2024-09-04 17:23:07,724 - INFO - Command 'install seaborn' executed successfully.
+2024-09-04 17:23:07,724 - INFO - seaborn installed successfully.
+2024-09-04 17:23:07,724 - INFO - Installing library tensorflow...
+2024-09-04 17:23:07,724 - INFO - Running pip command: install tensorflow
+2024-09-04 17:23:08,905 - INFO - Command 'install tensorflow' executed successfully.
+2024-09-04 17:23:08,905 - INFO - tensorflow installed successfully.
+2024-09-04 17:23:08,905 - INFO - Installing library scikit-learn...
+2024-09-04 17:23:08,905 - INFO - Running pip command: install scikit-learn
+2024-09-04 17:23:10,097 - INFO - Command 'install scikit-learn' executed successfully.
+2024-09-04 17:23:10,097 - INFO - scikit-learn installed successfully.
+2024-09-04 17:23:10,097 - INFO - Installing library openpyxl...
+2024-09-04 17:23:10,097 - INFO - Running pip command: install openpyxl
+2024-09-04 17:23:11,287 - INFO - Command 'install openpyxl' executed successfully.
+2024-09-04 17:23:11,287 - INFO - openpyxl installed successfully.
+2024-09-04 17:23:11,287 - INFO - Installation of all libraries completed!
+2024-09-04 17:36:12,669 - INFO - Upgrading pip...
+2024-09-04 17:36:12,669 - INFO - Running pip command: install --upgrade pip
+2024-09-04 17:36:14,232 - INFO - Command 'install --upgrade pip' executed successfully.
+2024-09-04 17:36:14,232 - INFO - pip upgraded successfully.
+2024-09-04 17:36:14,233 - INFO - Installing library numpy...
+2024-09-04 17:36:14,233 - INFO - Running pip command: install numpy
+2024-09-04 17:36:15,820 - INFO - Command 'install numpy' executed successfully.
+2024-09-04 17:36:15,820 - INFO - numpy installed successfully.
+2024-09-04 17:36:15,820 - INFO - Installing library pandas...
+2024-09-04 17:36:15,820 - INFO - Running pip command: install pandas
+2024-09-04 17:36:17,120 - INFO - Command 'install pandas' executed successfully.
+2024-09-04 17:36:17,120 - INFO - pandas installed successfully.
+2024-09-04 17:36:17,120 - INFO - Installing library matplotlib...
+2024-09-04 17:36:17,120 - INFO - Running pip command: install matplotlib
+2024-09-04 17:36:18,414 - INFO - Command 'install matplotlib' executed successfully.
+2024-09-04 17:36:18,414 - INFO - matplotlib installed successfully.
+2024-09-04 17:36:18,414 - INFO - Installing library seaborn...
+2024-09-04 17:36:18,414 - INFO - Running pip command: install seaborn
+2024-09-04 17:36:19,863 - INFO - Command 'install seaborn' executed successfully.
+2024-09-04 17:36:19,863 - INFO - seaborn installed successfully.
+2024-09-04 17:36:19,863 - INFO - Installing library tensorflow...
+2024-09-04 17:36:19,863 - INFO - Running pip command: install tensorflow
+2024-09-04 17:36:21,209 - INFO - Command 'install tensorflow' executed successfully.
+2024-09-04 17:36:21,214 - INFO - tensorflow installed successfully.
+2024-09-04 17:36:21,214 - INFO - Installing library scikit-learn...
+2024-09-04 17:36:21,214 - INFO - Running pip command: install scikit-learn
+2024-09-04 17:36:22,541 - INFO - Command 'install scikit-learn' executed successfully.
+2024-09-04 17:36:22,541 - INFO - scikit-learn installed successfully.
+2024-09-04 17:36:22,541 - INFO - Installing library openpyxl...
+2024-09-04 17:36:22,541 - INFO - Running pip command: install openpyxl
+2024-09-04 17:36:23,756 - INFO - Command 'install openpyxl' executed successfully.
+2024-09-04 17:36:23,756 - INFO - openpyxl installed successfully.
+2024-09-04 17:36:23,756 - INFO - Installing library shap...
+2024-09-04 17:36:23,756 - INFO - Running pip command: install shap
+2024-09-04 17:36:25,863 - INFO - Command 'install shap' executed successfully.
+2024-09-04 17:36:25,863 - INFO - shap installed successfully.
+2024-09-04 17:36:25,863 - INFO - Installation of all libraries completed!

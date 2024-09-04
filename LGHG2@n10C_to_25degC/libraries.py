@@ -127,7 +127,8 @@ libraries = [
     "seaborn",
     "tensorflow",
     "scikit-learn",
-    "openpyxl"
+    "openpyxl",
+    "shap"
 ]
 upgrade_pip()
 install_libraries(libraries)
