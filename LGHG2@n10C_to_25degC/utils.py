@@ -31,6 +31,12 @@ def normalize(X):
 
 
 def get_metrics(y_test, y_predicted):
+    ma = metrics.max_error(y_test, y_predicted)
+    mae = metrics.mean_absolute_error(y_test, y_predicted)
+    mape = metrics.mean_absolute_percentage_error(y_test, y_predicted)
+    mse = metrics.mean_squared_error(y_test, y_predicted)
+    rmse = metrics.root_mean_squared_error(y_test, y_predicted)
+    rmsle = metrics.root_mean_squared_log_error(y_test, y_predicted)
     results = {
         "Metric": [
             "max_error",
@@ -41,12 +47,12 @@ def get_metrics(y_test, y_predicted):
             "root_mean_squared_log_error"
         ],
         "Value": [
-            metrics.max_error(y_test, y_predicted),
-            metrics.mean_absolute_error(y_test, y_predicted),
-            metrics.mean_absolute_percentage_error(y_test, y_predicted),
-            metrics.mean_squared_error(y_test, y_predicted),
-            metrics.root_mean_squared_error(y_test, y_predicted),
-            metrics.root_mean_squared_log_error(y_test, y_predicted)
+            ma,
+            mae,
+            mape,
+            mse,
+            rmse,
+            rmsle
         ]
     }
     df = pd.DataFrame(results)
@@ -56,8 +62,30 @@ def get_metrics(y_test, y_predicted):
         'font-size': '12pt',
         'text-align': 'center'
     })
-    return styled_table
+    return [ma, mae, mape, mse, rmse, rmsle], styled_table
     
+
+def metrics_plot(models_names, metrics_names, metrics_values):
+    if len(metrics_names) != len(metrics_values[0]):
+        raise ValueError("len(metrics_names) is not equal to len(metrics_values).")
+    metrics_grouped = {label: [metric[i] * 100 for metric in metrics_values] for i, label in enumerate(metrics_names)}
+    x = np.arange(len(models_names))
+    width = 0.1
+    multiplier = 0
+    fig, ax = plt.subplots(layout='constrained', figsize=(14, 4))
+    for attribute, measurement in metrics_grouped.items():
+        offset = width * multiplier
+        rects = ax.bar(x+offset, measurement, width, label=attribute)
+        ax.bar_label(rects, fmt='%.1f', padding=3)
+        multiplier += 1
+    ax.set_ylabel('[%]')
+    ax.set_title('Metrics by Models')
+    ax.set_xticks(x + width * (len(metrics_grouped) - 1) / 2)
+    ax.set_xticklabels(models_names)
+    ax.legend(loc='upper left')
+    ax.set_ylim(0, 100)
+    plt.show()
+        
 
 def results_plot(
     x_observed, 
