@@ -3,6 +3,8 @@ from sklearn import metrics
 import pandas as pd
 from tabulate import tabulate
 from matplotlib import pyplot as plt
+import matplotlib.lines as mlines
+import matplotlib.patches as mpatches
 import seaborn as sns
 
 
@@ -88,31 +90,35 @@ def metrics_plot(models_names, metrics_names, metrics_values):
         
 
 def results_plot(
-    x_observed, 
+    x, 
     y_observed,
-    x_predicted, 
-    y_predicted,
+    y_predicted, 
+    y_predicted_ahif,
     xlim,
     ylim,
     xlabel, 
     ylabel, 
-    title
+    title,
+    color_observed='#3643f5',
+    color_predicted='#f53333',
+    color_predicted_ahif='#13ad2d'
 ):
     fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(11, 6))
+    observed_handle = mlines.Line2D([], [], color=color_observed, label='observed')
+    predicted_handle = mlines.Line2D([], [], color=color_predicted, marker='o', markersize=5, linestyle='None', label='predicted')
+    predicted_ahif_handle = mlines.Line2D([], [], color=color_predicted_ahif, label='predicted-AHIF')
     
-    scatter_observed = axs[0].scatter(x_observed, y_observed, label='observed', s=0.001)
-    scatter_predicted = axs[0].scatter(x_predicted, y_predicted, label='predicted', s=0.001) 
+    scatter_observed = axs[0].plot(x, y_observed, label='observed', color=color_observed)
+    scatter_predicted = axs[0].scatter(x, y_predicted, label='predicted', s=0.005, color=color_predicted) 
+    scatter_observed = axs[0].plot(x, y_predicted_ahif, label='predicted-AHIF', color=color_predicted_ahif)
     axs[0].set_xlabel(f'{xlabel}'), axs[0].set_ylabel(f'{ylabel}')
-    legend_observed = axs[0].scatter([], [], color=scatter_observed.get_edgecolor()[0], label='observed')
-    legend_predicted = axs[0].scatter([], [], color=scatter_predicted.get_edgecolor()[0], label='predicted')
-    axs[0].legend(handles=[legend_observed, legend_predicted])
+    axs[0].legend(handles=[observed_handle, predicted_handle, predicted_ahif_handle])
     
-    scatter_observed = axs[1].scatter(x_observed, y_observed, label='observed', s=0.001)
-    scatter_predicted = axs[1].scatter(x_predicted, y_predicted, label='predicted', s=0.001)
-    axs[1].set_xlabel(f'{xlabel}'), axs[0].set_ylabel(f'{ylabel}')
-    legend_observed = axs[1].scatter([], [], color=scatter_observed.get_edgecolor()[0], label='observed')
-    legend_predicted = axs[1].scatter([], [], color=scatter_predicted.get_edgecolor()[0], label='predicted')
-    axs[1].legend(handles=[legend_observed, legend_predicted])
+    scatter_observed = axs[1].plot(x, y_observed, label='observed', color=color_observed)
+    scatter_predicted = axs[1].scatter(x, y_predicted, label='predicted', s=0.005, color=color_predicted)
+    scatter_observed = axs[1].plot(x, y_predicted_ahif, label='predicted-AHIF', color=color_predicted_ahif)
+    axs[1].set_xlabel(f'{xlabel}'), axs[1].set_ylabel(f'{ylabel}')
+    axs[1].legend(handles=[observed_handle, predicted_handle, predicted_ahif_handle])
     axs[1].set_xlim(xlim[0], xlim[1])
     axs[1].set_ylim(ylim[0], ylim[1])
 
