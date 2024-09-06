@@ -308,6 +308,7 @@ class AHIF:
         """
         estimates = []
         residuals = []
+        self._estimate = data[0]
         for measurement in data:
             estimate = self._update(measurement)
             estimates.append(estimate)
