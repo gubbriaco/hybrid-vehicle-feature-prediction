@@ -1,3 +1,16 @@
+"""
+This module provides classes for building Feedforward Neural Network (FNN) models using Keras,
+custom activation functions, and an Adaptive H-Infinity Filter (AHIF) for estimating the state of a system
+based on noisy measurements.
+
+Main Classes:
+- FNN: Implements a Feedforward Neural Network model with Keras.
+- CustomLeakyReLU: A custom implementation of the Leaky ReLU activation function.
+- CustomClippedReLU: A custom implementation of the Clipped ReLU activation function.
+- AHIF: An Adaptive H-Infinity Filter for state estimation with noise.
+"""
+
+
 import sys
 import logging
 from tensorflow import keras
@@ -225,27 +238,26 @@ class CustomClippedReLU(layers.Layer):
 
 class AHIF:
     """
-    Adaptive Hybrid Iterative Filter (AHIF) for data processing using adaptive Kalman filtering.
+    Adaptive H-Infinity Filter (AHIF) Implementation.
 
-    This class implements a Kalman filter that dynamically adapts to changes in measurement residual variability.
-    The filter updates its estimate and process variance based on the provided data, improving estimate accuracy over time.
+    This class implements a simplified Adaptive H-Infinity Filter for estimating the state of a system
+    based on noisy measurements. The process variance is adapted based on the residuals over time.
 
     Attributes:
-        _process_variance (float): Initial process variance (default: 1e-5).
-        _measurement_variance (float): Measurement variance (default: 1e-1).
-        _estimate (float): Initial estimate value (default: 0).
-        _error_covariance (float): Initial error covariance (default: 1).
+        process_variance (float): The variance of the process (model uncertainty).
+        measurement_variance (float): The variance of the measurement (sensor noise).
+        estimate (float): The current estimate of the state.
+        error_covariance (float): The current error covariance associated with the estimate.
     """
-
     def __init__(self, process_variance=1e-5, measurement_variance=1e-1, initial_estimate=0, initial_error_covariance=1):
         """
-        Initializes an AHIF instance.
+        Initializes the Adaptive H-Infinity Filter with given parameters.
 
         Args:
-            process_variance (float): Variance of the process affecting the filter's prediction (default: 1e-5).
-            measurement_variance (float): Variance of the measurement affecting the filter's update (default: 1e-1).
-            initial_estimate (float): Initial value of the estimate (default: 0).
-            initial_error_covariance (float): Initial error covariance (default: 1).
+            process_variance (float): Initial variance of the process (default is 1e-5).
+            measurement_variance (float): Variance of the measurement noise (default is 1e-1).
+            initial_estimate (float): Initial estimate of the system state (default is 0).
+            initial_error_covariance (float): Initial error covariance (default is 1).
         """
         logging.basicConfig(stream=sys.stdout, level=logging.INFO)
         self._process_variance = process_variance
@@ -257,15 +269,13 @@ class AHIF:
 
     def _update(self, measurement):
         """
-        Updates the estimate and error covariance based on the provided measurement.
-
-        This method predicts the new state and updates the estimate and error covariance using the Kalman gain.
+        Performs the prediction and update steps of the filter for a single measurement.
 
         Args:
-            measurement (float): The current measurement to update the estimate with.
+            measurement (float): The latest measurement from the system.
 
         Returns:
-            float: The updated estimate.
+            float: The updated estimate of the system state.
         """
         # Prediction
         predicted_estimate = self._estimate
@@ -278,13 +288,10 @@ class AHIF:
 
     def _adapt(self, residuals):
         """
-        Adapts the process variance based on recent residuals.
-
-        This method updates the process variance (process_variance) based on the standard deviation of the residuals.
-        The process variance is adjusted to avoid becoming too small, which could destabilize the filter.
+        Adapts the process variance based on the recent residuals (measurement - estimate).
 
         Args:
-            residuals (list of float): List of recent residuals used for adaptation.
+            residuals (list of float): The list of residuals from recent measurements.
         """
         if len(residuals) > 1:
             residual_std = np.std(residuals)
@@ -296,15 +303,13 @@ class AHIF:
 
     def apply(self, data):
         """
-        Applies the AHIF to the provided data and returns the resulting estimates.
-
-        This method performs the estimate update for each measurement in the data and adapts the filter based on recent residuals.
+        Applies the Adaptive H-Infinity Filter to a series of measurements.
 
         Args:
-            data (list of float): List of measurement data to which the filter will be applied.
+            data (list of float): The list of measurements.
 
         Returns:
-            numpy.ndarray: A numpy array containing the resulting estimates for each data point.
+            numpy.ndarray: The list of state estimates corresponding to the measurements.
         """
         estimates = []
         residuals = []
