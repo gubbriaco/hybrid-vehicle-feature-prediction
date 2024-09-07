@@ -33,6 +33,19 @@ def normalize(X):
 
 
 def get_metrics(y_test, y_predicted):
+    """
+    Calculate various performance metrics and return them in a styled DataFrame.
+
+    Computes the following metrics: max error, mean absolute error, mean absolute percentage error,
+    mean squared error, root mean squared error, and root mean squared log error.
+
+    Parameters:
+    y_test (numpy.ndarray): Array of true target values.
+    y_predicted (numpy.ndarray): Array of predicted target values.
+
+    Returns:
+    tuple: A tuple containing a list of metric values and a styled DataFrame of the metrics.
+    """
     ma = metrics.max_error(y_test, y_predicted)
     mae = metrics.mean_absolute_error(y_test, y_predicted)
     mape = metrics.mean_absolute_percentage_error(y_test, y_predicted)
@@ -68,6 +81,17 @@ def get_metrics(y_test, y_predicted):
     
 
 def metrics_plot(models_names, metrics_names, metrics_values):
+    """
+    Create a bar plot to visualize metrics for different models.
+
+    Parameters:
+    models_names (list of str): Names of the models.
+    metrics_names (list of str): Names of the metrics to plot.
+    metrics_values (list of lists): Metrics values for each model. Each sublist corresponds to a metric.
+
+    Raises:
+    ValueError: If the number of metric names does not match the number of metric values.
+    """
     if len(metrics_names) != len(metrics_values[0]):
         raise ValueError("len(metrics_names) is not equal to len(metrics_values).")
     metrics_grouped = {label: [metric[i] * 100 for metric in metrics_values] for i, label in enumerate(metrics_names)}
@@ -103,20 +127,37 @@ def results_plot(
     color_predicted='#f53333',
     color_predicted_ahif='#13ad2d'
 ):
+    """
+    Create plots to visualize the observed and predicted values, including predictions from an alternative model (AHIF).
+
+    Parameters:
+    x (numpy.ndarray): The x-axis values (e.g., time steps).
+    y_observed (numpy.ndarray): The observed values.
+    y_predicted (numpy.ndarray): The predicted values.
+    y_predicted_ahif (numpy.ndarray): The predicted values from the alternative model (AHIF).
+    xlim (tuple): x-axis limits as (min, max).
+    ylim (tuple): y-axis limits as (min, max).
+    xlabel (str): Label for the x-axis.
+    ylabel (str): Label for the y-axis.
+    title (str): Title of the plot.
+    color_observed (str): Color for the observed data.
+    color_predicted (str): Color for the predicted data.
+    color_predicted_ahif (str): Color for the predicted data from the alternative model.
+    """
     fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(11, 6))
     observed_handle = mlines.Line2D([], [], color=color_observed, label='observed')
     predicted_handle = mlines.Line2D([], [], color=color_predicted, marker='o', markersize=5, linestyle='None', label='predicted')
     predicted_ahif_handle = mlines.Line2D([], [], color=color_predicted_ahif, label='predicted-AHIF')
     
-    scatter_observed = axs[0].plot(x, y_observed, label='observed', color=color_observed)
-    scatter_predicted = axs[0].scatter(x, y_predicted, label='predicted', s=0.005, color=color_predicted) 
-    scatter_observed = axs[0].plot(x, y_predicted_ahif, label='predicted-AHIF', color=color_predicted_ahif)
+    axs[0].plot(x, y_observed, label='observed', color=color_observed)
+    axs[0].scatter(x, y_predicted, label='predicted', s=0.005, color=color_predicted)
+    axs[0].plot(x, y_predicted_ahif, label='predicted-AHIF', color=color_predicted_ahif)
     axs[0].set_xlabel(f'{xlabel}'), axs[0].set_ylabel(f'{ylabel}')
     axs[0].legend(handles=[observed_handle, predicted_handle, predicted_ahif_handle])
     
-    scatter_observed = axs[1].plot(x, y_observed, label='observed', color=color_observed)
-    scatter_predicted = axs[1].scatter(x, y_predicted, label='predicted', s=0.005, color=color_predicted)
-    scatter_observed = axs[1].plot(x, y_predicted_ahif, label='predicted-AHIF', color=color_predicted_ahif)
+    axs[1].plot(x, y_observed, label='observed', color=color_observed)
+    axs[1].scatter(x, y_predicted, label='predicted', s=0.005, color=color_predicted)
+    axs[1].plot(x, y_predicted_ahif, label='predicted-AHIF', color=color_predicted_ahif)
     axs[1].set_xlabel(f'{xlabel}'), axs[1].set_ylabel(f'{ylabel}')
     axs[1].legend(handles=[observed_handle, predicted_handle, predicted_ahif_handle])
     axs[1].set_xlim(xlim[0], xlim[1])
@@ -128,26 +169,43 @@ def results_plot(
 
 
 def pie_chart_plot(train_data_df, val_data_df, test_data_df, title="Dataset Distribution"):
-  num_rows_train = len(train_data_df)
-  num_rows_val = len(val_data_df)
-  num_rows_test = len(test_data_df)
+    """
+    Create a pie chart to visualize the distribution of the dataset among training, validation, and test sets.
 
-  total_rows = num_rows_train + num_rows_val + num_rows_test
+    Parameters:
+    train_data_df (pd.DataFrame): DataFrame containing training data.
+    val_data_df (pd.DataFrame): DataFrame containing validation data.
+    test_data_df (pd.DataFrame): DataFrame containing test data.
+    title (str): Title of the pie chart.
+    """
+    num_rows_train = len(train_data_df)
+    num_rows_val = len(val_data_df)
+    num_rows_test = len(test_data_df)
 
-  percentages = [
-      num_rows_train / total_rows * 100,
-      num_rows_val / total_rows * 100,
-      num_rows_test / total_rows * 100
-  ]
+    total_rows = num_rows_train + num_rows_val + num_rows_test
 
-  labels = ['Training', 'Validation', 'Test']
-  plt.pie(percentages, labels=labels, autopct='%1.1f%%')
-  plt.title(title)
-  plt.axis('equal')
-  plt.show()
+    percentages = [
+        num_rows_train / total_rows * 100,
+        num_rows_val / total_rows * 100,
+        num_rows_test / total_rows * 100
+    ]
+
+    labels = ['Training', 'Validation', 'Test']
+    plt.pie(percentages, labels=labels, autopct='%1.1f%%')
+    plt.title(title)
+    plt.axis('equal')
+    plt.show()
 
 
 def violin_plot(train_data_df, val_data_df, test_data_df):
+    """
+    Create violin plots to visualize the distribution of features for training, validation, and test datasets.
+
+    Parameters:
+    train_data_df (pd.DataFrame): DataFrame containing training data.
+    val_data_df (pd.DataFrame): DataFrame containing validation data.
+    test_data_df (pd.DataFrame): DataFrame containing test data.
+    """
     fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
     sns.violinplot(ax=axes[0], data=train_data_df)
     axes[0].set_title('Training Distribution')
@@ -158,6 +216,14 @@ def violin_plot(train_data_df, val_data_df, test_data_df):
     
 
 def hist_plot(train_data_df, val_data_df, test_data_df):
+    """
+    Create histograms to visualize the distribution of each feature for training, validation, and test datasets.
+
+    Parameters:
+    train_data_df (pd.DataFrame): DataFrame containing training data.
+    val_data_df (pd.DataFrame): DataFrame containing validation data.
+    test_data_df (pd.DataFrame): DataFrame containing test data.
+    """
     fig, axs = plt.subplots(1, train_data_df.shape[1], figsize=(20, 4))
     for i, key in enumerate(train_data_df.keys()):
         sns.histplot(ax=axs[i], x=train_data_df[key])
@@ -184,6 +250,14 @@ def hist_plot(train_data_df, val_data_df, test_data_df):
 
 
 def time_series_plot(train_data_df, val_data_df, test_data_df):
+    """
+    Create line plots to visualize time series data for training, validation, and test datasets.
+
+    Parameters:
+    train_data_df (pd.DataFrame): DataFrame containing training data.
+    val_data_df (pd.DataFrame): DataFrame containing validation data.
+    test_data_df (pd.DataFrame): DataFrame containing test data.
+    """
     fig, axs = plt.subplots(1, train_data_df.shape[1], figsize=(20, 4))
     for i, key in enumerate(train_data_df.keys()):
         sns.lineplot(ax=axs[i], data=train_data_df[key])
@@ -210,6 +284,12 @@ def time_series_plot(train_data_df, val_data_df, test_data_df):
 
 
 def correlation_map(data_df):
+    """
+    Create a heatmap to visualize the correlation matrix of the features in the dataset.
+
+    Parameters:
+    data_df (pd.DataFrame): DataFrame containing the dataset.
+    """
     plt.figure(figsize=(16, 6))
     sns.heatmap(data_df.corr(), annot=True)
     plt.show()
