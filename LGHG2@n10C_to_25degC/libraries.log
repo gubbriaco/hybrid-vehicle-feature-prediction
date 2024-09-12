@@ -4521,3 +4521,40 @@
 2024-09-06 17:19:21,064 - INFO - Command 'install shap' executed successfully.
 2024-09-06 17:19:21,064 - INFO - shap installed successfully.
 2024-09-06 17:19:21,064 - INFO - Installation of all libraries completed!
+2024-09-07 16:06:46,157 - INFO - Upgrading pip...
+2024-09-07 16:06:46,157 - INFO - Running pip command: install --upgrade pip
+2024-09-07 16:06:54,480 - INFO - Command 'install --upgrade pip' executed successfully.
+2024-09-07 16:06:54,480 - INFO - pip upgraded successfully.
+2024-09-07 16:06:54,481 - INFO - Installing library numpy...
+2024-09-07 16:06:54,481 - INFO - Running pip command: install numpy
+2024-09-07 16:06:58,382 - INFO - Command 'install numpy' executed successfully.
+2024-09-07 16:06:58,382 - INFO - numpy installed successfully.
+2024-09-07 16:06:58,382 - INFO - Installing library pandas...
+2024-09-07 16:06:58,382 - INFO - Running pip command: install pandas
+2024-09-07 16:07:02,738 - INFO - Command 'install pandas' executed successfully.
+2024-09-07 16:07:02,738 - INFO - pandas installed successfully.
+2024-09-07 16:07:02,739 - INFO - Installing library matplotlib...
+2024-09-07 16:07:02,739 - INFO - Running pip command: install matplotlib
+2024-09-07 16:07:06,213 - INFO - Command 'install matplotlib' executed successfully.
+2024-09-07 16:07:06,214 - INFO - matplotlib installed successfully.
+2024-09-07 16:07:06,214 - INFO - Installing library seaborn...
+2024-09-07 16:07:06,214 - INFO - Running pip command: install seaborn
+2024-09-07 16:07:09,317 - INFO - Command 'install seaborn' executed successfully.
+2024-09-07 16:07:09,317 - INFO - seaborn installed successfully.
+2024-09-07 16:07:09,317 - INFO - Installing library tensorflow...
+2024-09-07 16:07:09,317 - INFO - Running pip command: install tensorflow
+2024-09-07 16:07:13,156 - INFO - Command 'install tensorflow' executed successfully.
+2024-09-07 16:07:13,157 - INFO - tensorflow installed successfully.
+2024-09-07 16:07:13,157 - INFO - Installing library scikit-learn...
+2024-09-07 16:07:13,157 - INFO - Running pip command: install scikit-learn
+2024-09-07 16:07:17,241 - INFO - Command 'install scikit-learn' executed successfully.
+2024-09-07 16:07:17,241 - INFO - scikit-learn installed successfully.
+2024-09-07 16:07:17,241 - INFO - Installing library openpyxl...
+2024-09-07 16:07:17,242 - INFO - Running pip command: install openpyxl
+2024-09-07 16:07:20,774 - INFO - Command 'install openpyxl' executed successfully.
+2024-09-07 16:07:20,774 - INFO - openpyxl installed successfully.
+2024-09-07 16:07:20,774 - INFO - Installing library shap...
+2024-09-07 16:07:20,775 - INFO - Running pip command: install shap
+2024-09-07 16:07:24,497 - INFO - Command 'install shap' executed successfully.
+2024-09-07 16:07:24,497 - INFO - shap installed successfully.
+2024-09-07 16:07:24,498 - INFO - Installation of all libraries completed!
