@@ -64,7 +64,9 @@ class FNN:
         """
         logging.info("Building the model...")
         self.model = keras.Sequential([
-            layers.Input(shape=(self.input_shape,)),
+            layers.Input(
+                shape=(self.input_shape,)
+            ),
             layers.Dense(
                 256,
                 activation=keras.activations.relu
